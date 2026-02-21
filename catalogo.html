@@ -743,6 +743,32 @@ initCarrosseis();
   window.addEventListener("resize", resetPosition);
   resetPosition();
 })();
+// ===== BOTÃO MINIMIZAR / MAXIMIZAR =====
+(function cartMinMax(){
+  const dock = document.querySelector(".cartDock");
+  const btn = document.getElementById("cartToggleBtn");
+  if(!dock || !btn) return;
+
+  // lembra o estado (salva no navegador)
+  const KEY = "LNA_CART_MIN";
+  const saved = localStorage.getItem(KEY);
+  if(saved === "1") dock.classList.add("isMin");
+
+  function syncIcon(){
+    const isMin = dock.classList.contains("isMin");
+    btn.textContent = isMin ? "+" : "—";
+    btn.title = isMin ? "Maximizar" : "Minimizar";
+  }
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation(); // não deixa o clique virar arrasto
+    dock.classList.toggle("isMin");
+    localStorage.setItem(KEY, dock.classList.contains("isMin") ? "1" : "0");
+    syncIcon();
+  });
+
+  syncIcon();
+})();
 
     // Start
     renderMiniCart();
