@@ -601,7 +601,7 @@ initCarrosseis();
   window.addEventListener("pointercancel", onUp);
 
   // posição inicial boa no mobile
-  function resetPosition(){
+function resetPosition(){
   // posição inicial “boa” em qualquer tela
   // (você pode mudar esses números depois)
   setBottomPx(12);
@@ -623,6 +623,7 @@ initCarrosseis();
 }
 window.addEventListener("resize", resetPosition);
 resetPosition();
+})();
 
     // Start
     renderMiniCart();
