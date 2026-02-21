@@ -586,117 +586,125 @@ btnNext.addEventListener("click", (e) => e.stopPropagation());
 
 initCarrosseis();
 
-// ===== ABA ARRASTÁVEL NO CELULAR (não some da tela) =====
-(function enableMobileDragCart(){
+// ===== ABA ARRASTÁVEL (PC + celular) =====
+(function enableDragCart(){
   const dock = document.querySelector(".cartDock");
   const handle = document.getElementById("dragHandle");
+  const bottomHandle = document.getElementById("dragBottom");
   if(!dock || !handle) return;
 
-  const dragHandle = document.getElementById("dragHandle");
-const dragBottom = document.getElementById("dragBottom");
-
-function bindDrag(el){
-  if(!el) return;
-  el.addEventListener("mousedown", startDrag);
-  el.addEventListener("touchstart", startDrag, { passive:false });
-}
-
-bindDrag(dragHandle); // cabeçalho
-bindDrag(dragBottom); // parte de baixo
-
-  // só ativa em tela pequena
-  const canDrag = () => true; // PC + celular
+  const MIN_VISIBLE_PX = 90; // sempre sobra uma parte visível na tela
+  const MARGIN = 8;
 
   let dragging = false;
+  let startX = 0;
   let startY = 0;
-  let startBottom = 0;
+  let startLeft = 0;
+  let startTop = 0;
 
-  // garante que sempre vai sobrar uma parte visível (a “alça”)
-  const MIN_VISIBLE_PX = 70;   // quanto fica sempre aparecendo
-  const MARGIN = 8;            // margem de segurança
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
 
-  function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
-
-  function getBottomPx(){
-    const b = getComputedStyle(dock).bottom;
-    const n = parseFloat(b || "0");
-    return isNaN(n) ? 0 : n;
-  }
-
-  function setBottomPx(px){
-    dock.style.bottom = px + "px";
-    dock.style.top = "auto";
-  }
-
-  function limits(){
-    const vh = window.innerHeight;
-    const dockH = dock.getBoundingClientRect().height;
-
-    // bottom mínimo: quase encostado embaixo
-    const minBottom = MARGIN;
-
-    // bottom máximo: sobe até deixar MIN_VISIBLE_PX aparecendo embaixo
-    // (ou seja, a maior parte vai para fora pra cima, mas a “alça” fica)
-    const maxBottom = Math.max(MARGIN, vh - MIN_VISIBLE_PX);
-
-    // Porém, se o dock for muito alto, limitamos para não “sumir” e nem travar
-    // (mantém sempre usável)
-    return { minBottom, maxBottom };
-  }
+  function getRect(){ return dock.getBoundingClientRect(); }
 
   function onDown(e){
-    if(!canDrag()) return;
-    dragging = true;
-    handle.setPointerCapture?.(e.pointerId);
+    // evita scroll no touch
+    if(e.cancelable) e.preventDefault();
 
-    startY = e.clientY;
-    startBottom = getBottomPx();
+    dragging = true;
+    dock.style.transition = "none";
+
+    const r = getRect();
+    startX = (e.touches ? e.touches[0].clientX : e.clientX);
+    startY = (e.touches ? e.touches[0].clientY : e.clientY);
+
+    startLeft = r.left;
+    startTop = r.top;
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+
+    window.addEventListener("touchmove", onMove, { passive:false });
+    window.addEventListener("touchend", onUp);
+    window.addEventListener("touchcancel", onUp);
   }
 
   function onMove(e){
-    if(!dragging || !canDrag()) return;
+    if(!dragging) return;
+    if(e.cancelable) e.preventDefault();
 
-    const dy = e.clientY - startY;      // arrastar pra baixo => dy positivo
-    let nextBottom = startBottom - dy;  // se arrastar pra cima, bottom aumenta
+    const x = (e.touches ? e.touches[0].clientX : e.clientX);
+    const y = (e.touches ? e.touches[0].clientY : e.clientY);
 
-    const {minBottom, maxBottom} = limits();
-    nextBottom = clamp(nextBottom, minBottom, maxBottom);
+    const dx = x - startX;
+    const dy = y - startY;
 
-    setBottomPx(nextBottom);
+    const r = getRect();
+    const w = r.width;
+    const h = r.height;
+
+    // limites (não deixa sumir completamente)
+    const minLeft = -(w - MIN_VISIBLE_PX);
+    const maxLeft = window.innerWidth - MIN_VISIBLE_PX;
+
+    const minTop = MARGIN;
+    const maxTop = window.innerHeight - MIN_VISIBLE_PX;
+
+    const nextLeft = clamp(startLeft + dx, minLeft, maxLeft);
+    const nextTop  = clamp(startTop + dy, minTop, maxTop);
+
+    dock.style.left = nextLeft + "px";
+    dock.style.top = nextTop + "px";
+    dock.style.right = "auto";
+    dock.style.bottom = "auto";
   }
 
   function onUp(){
     dragging = false;
+    dock.style.transition = "";
+
+    window.removeEventListener("mousemove", onMove);
+    window.removeEventListener("mouseup", onUp);
+
+    window.removeEventListener("touchmove", onMove);
+    window.removeEventListener("touchend", onUp);
+    window.removeEventListener("touchcancel", onUp);
   }
 
-  handle.addEventListener("pointerdown", onDown);
-  window.addEventListener("pointermove", onMove);
-  window.addEventListener("pointerup", onUp);
-  window.addEventListener("pointercancel", onUp);
+  // trava clique nas setas do carrossel (não inicia drag)
+  dock.querySelectorAll("[data-prev],[data-next]").forEach(btn=>{
+    btn.addEventListener("mousedown", e => e.stopPropagation());
+    btn.addEventListener("touchstart", e => e.stopPropagation(), { passive:true });
+  });
 
-  // posição inicial boa no mobile
-function resetPosition(){
-  // posição inicial “boa” em qualquer tela
-  // (você pode mudar esses números depois)
-  setBottomPx(12);
+  // ligar nos dois pegadores
+  handle.addEventListener("mousedown", onDown);
+  handle.addEventListener("touchstart", onDown, { passive:false });
 
-  // garante que o drag vai mandar (não briga com top)
-  dock.style.top = "auto";
+  if(bottomHandle){
+    bottomHandle.addEventListener("mousedown", onDown);
+    bottomHandle.addEventListener("touchstart", onDown, { passive:false });
+  }
 
-  // em desktop, mantém na direita igual antes
-  if(window.innerWidth > 860){
-    dock.style.left = "auto";
+  // posição inicial bonitinha
+  function resetPosition(){
     dock.style.right = "18px";
-    dock.style.width = "340px";
-  }else{
-    // mobile: ocupa a largura
-    dock.style.right = "12px";
-    dock.style.left = "12px";
-    dock.style.width = "auto";
+    dock.style.left = "auto";
+    dock.style.top = "88px";
+    dock.style.bottom = "auto";
+
+    if(window.innerWidth <= 860){
+      dock.style.left = "12px";
+      dock.style.right = "12px";
+      dock.style.top = "auto";
+      dock.style.bottom = "12px";
+      dock.style.width = "auto";
+    }else{
+      dock.style.width = "340px";
+    }
   }
-}
-window.addEventListener("resize", resetPosition);
-resetPosition();
+
+  window.addEventListener("resize", resetPosition);
+  resetPosition();
 })();
 
     // Start
