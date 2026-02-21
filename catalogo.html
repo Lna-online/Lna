@@ -568,7 +568,7 @@ initCarrosseis();
   }
 
   function onDown(e){
-    if(!isMobile()) return;
+    if(!canDrag()) return;
     dragging = true;
     handle.setPointerCapture?.(e.pointerId);
 
