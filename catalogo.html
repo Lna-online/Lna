@@ -560,6 +560,18 @@ initCarrosseis();
   const handle = document.getElementById("dragHandle");
   if(!dock || !handle) return;
 
+  const dragHandle = document.getElementById("dragHandle");
+const dragBottom = document.getElementById("dragBottom");
+
+function bindDrag(el){
+  if(!el) return;
+  el.addEventListener("mousedown", startDrag);
+  el.addEventListener("touchstart", startDrag, { passive:false });
+}
+
+bindDrag(dragHandle); // cabeçalho
+bindDrag(dragBottom); // parte de baixo
+
   // só ativa em tela pequena
   const canDrag = () => true; // PC + celular
 
