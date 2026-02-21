@@ -322,35 +322,78 @@ border: 2px solid #0b0f14;}
   border: 1px solid rgba(255,255,255,.12);
 }
 
+}
+
 .cartToggleBtn{
   width:44px;
   height:38px;
   border-radius:12px;
-  border:1px solid rgba(255,255,255,.18);
-  background:linear-gradient(135deg, rgba(7,116,179,.95), rgba(59,77,235,.85));
+  border:1px solid rgba(255,255,255,.24);
+  background:linear-gradient(135deg, rgba(7,116,179,1), rgba(59,77,235,.95));
   color:#fff;
+  font-size:22px;
+  line-height:1;
   font-weight:900;
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 14px 28px rgba(7,116,179,.22);
+  box-shadow:0 14px 28px rgba(7,116,179,.28);
 }
 .cartToggleBtn:hover{opacity:.96; transform: translateY(-1px);}
 .cartToggleBtn:active{opacity:.9; transform: translateY(0);}
 
-.cartDock.isMin .cartBody,
-.cartDock.isMin .cartFoot{
+.cartDock.isMin{
   display:none;
 }
 
-/* quando minimiza, fica compacta e bem visível */
-.cartDock.isMin{
-  max-height:none;
+.cartFab{
+  position:fixed;
+  top:18px;
+  right:18px;
+  width:56px;
+  height:56px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.2);
+  background:linear-gradient(135deg, rgba(7,116,179,.98), rgba(59,77,235,.92));
+  color:#fff;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  cursor:pointer;
+  box-shadow:0 18px 36px rgba(0,0,0,.35);
+  z-index:70;
 }
-.cartDock.isMin .cartPanel{
-  border-radius:18px;
+.cartFab.isVisible{display:flex;}
+.cartFab:hover{opacity:.96; transform: translateY(-1px);}
+.cartFab:active{opacity:.9; transform: translateY(0);}
+
+.cartFabBadge{
+  position:absolute;
+  top:-4px;
+  right:-2px;
+  min-width:20px;
+  height:20px;
+  padding:0 6px;
+  border-radius:999px;
+  border:1px solid rgba(11,15,20,.7);
+  background:#ff4d4f;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
 }
+
+@media(max-width:860px){
+  .cartFab{
+    top:12px;
+    right:12px;
+    width:52px;
+    height:52px;
+  }
 }
 
   </style>
@@ -405,6 +448,11 @@ border: 2px solid #0b0f14;}
       </div>
     </div>
   </div>
+
+  <button class="cartFab" id="cartFabBtn" type="button" title="Abrir carrinho" aria-label="Abrir carrinho">
+    <span aria-hidden="true">🛒</span>
+    <span class="cartFabBadge" id="cartFabCount">0</span>
+  </button>
 
   <div class="container contentWithCart">
     <h1>Catálogo</h1>
@@ -475,8 +523,14 @@ function addToCart(prod, qtd, cor){
       const body = document.getElementById("cartBody");
       const totalEl = document.getElementById("cartTotal");
       const countEl = document.getElementById("cartCount");
+      const fabCountEl = document.getElementById("cartFabCount");
+      const totalItems = cart.reduce((acc, it) => acc + it.qtd, 0);
 
-      countEl.textContent = String(cart.reduce((acc, it) => acc + it.qtd, 0));
+      countEl.textContent = String(totalItems);
+      if(fabCountEl){
+        fabCountEl.textContent = String(totalItems);
+        fabCountEl.style.display = totalItems > 0 ? "inline-flex" : "none";
+      }
       totalEl.textContent = moneyBR(calcTotal(cart));
 
       if(cart.length === 0){
@@ -747,27 +801,35 @@ initCarrosseis();
 (function cartMinMax(){
   const dock = document.querySelector(".cartDock");
   const btn = document.getElementById("cartToggleBtn");
-  if(!dock || !btn) return;
+  const fabBtn = document.getElementById("cartFabBtn");
+  if(!dock || !btn || !fabBtn) return;
 
-  // lembra o estado (salva no navegador)
   const KEY = "LNA_CART_MIN";
-  const saved = localStorage.getItem(KEY);
-  if(saved === "1") dock.classList.add("isMin");
 
-  function syncIcon(){
-    const isMin = dock.classList.contains("isMin");
+  function setMinimized(isMin){
+    dock.classList.toggle("isMin", isMin);
+    fabBtn.classList.toggle("isVisible", isMin);
+    localStorage.setItem(KEY, isMin ? "1" : "0");
+
     btn.textContent = isMin ? "+" : "—";
     btn.title = isMin ? "Maximizar" : "Minimizar";
+    btn.setAttribute("aria-label", btn.title);
   }
 
+  btn.addEventListener("mousedown", (e) => e.stopPropagation());
+  btn.addEventListener("touchstart", (e) => e.stopPropagation(), { passive:true });
+
   btn.addEventListener("click", (e) => {
-    e.stopPropagation(); // não deixa o clique virar arrasto
-    dock.classList.toggle("isMin");
-    localStorage.setItem(KEY, dock.classList.contains("isMin") ? "1" : "0");
-    syncIcon();
+    e.stopPropagation();
+    setMinimized(!dock.classList.contains("isMin"));
   });
 
-  syncIcon();
+  fabBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setMinimized(false);
+  });
+
+  setMinimized(localStorage.getItem(KEY) === "1");
 })();
 
     // Start
@@ -775,4 +837,5 @@ initCarrosseis();
   </script>
 </body>
 </html>
+
 
