@@ -528,7 +528,7 @@ initCarrosseis();
   if(!dock || !handle) return;
 
   // só ativa em tela pequena
-  const isMobile = () => window.matchMedia("(max-width: 860px)").matches;
+  const canDrag = () => true; // PC + celular
 
   let dragging = false;
   let startY = 0;
