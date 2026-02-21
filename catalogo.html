@@ -230,10 +230,33 @@ border: 2px solid #0b0f14;}
 .dotMini.active{
   background:rgba(255,255,255,.75);
 }
+
+.tabs{
+  display:flex;
+  gap:10px;
+  margin:14px 0 18px;
+  flex-wrap:wrap;
+}
+
+.tabBtn{
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color:#eaf0ff;
+  cursor:pointer;
+  font-weight:800;
+}
+
+.tabBtn.active{
+  background: #0774b3;   /* sua cor */
+  border-color: rgba(255,255,255,.18);
+}
   </style>
 </head>
 
 <body>
+  
   <div class="topbar">
     <div class="wrap">
       <div class="brand">
