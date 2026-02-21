@@ -521,6 +521,100 @@ btnNext.addEventListener("click", (e) => e.stopPropagation());
 
 initCarrosseis();
 
+// ===== ABA ARRASTÁVEL NO CELULAR (não some da tela) =====
+(function enableMobileDragCart(){
+  const dock = document.querySelector(".cartDock");
+  const handle = document.getElementById("dragHandle");
+  if(!dock || !handle) return;
+
+  // só ativa em tela pequena
+  const isMobile = () => window.matchMedia("(max-width: 860px)").matches;
+
+  let dragging = false;
+  let startY = 0;
+  let startBottom = 0;
+
+  // garante que sempre vai sobrar uma parte visível (a “alça”)
+  const MIN_VISIBLE_PX = 70;   // quanto fica sempre aparecendo
+  const MARGIN = 8;            // margem de segurança
+
+  function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
+
+  function getBottomPx(){
+    const b = getComputedStyle(dock).bottom;
+    const n = parseFloat(b || "0");
+    return isNaN(n) ? 0 : n;
+  }
+
+  function setBottomPx(px){
+    dock.style.bottom = px + "px";
+    dock.style.top = "auto";
+  }
+
+  function limits(){
+    const vh = window.innerHeight;
+    const dockH = dock.getBoundingClientRect().height;
+
+    // bottom mínimo: quase encostado embaixo
+    const minBottom = MARGIN;
+
+    // bottom máximo: sobe até deixar MIN_VISIBLE_PX aparecendo embaixo
+    // (ou seja, a maior parte vai para fora pra cima, mas a “alça” fica)
+    const maxBottom = Math.max(MARGIN, vh - MIN_VISIBLE_PX);
+
+    // Porém, se o dock for muito alto, limitamos para não “sumir” e nem travar
+    // (mantém sempre usável)
+    return { minBottom, maxBottom };
+  }
+
+  function onDown(e){
+    if(!isMobile()) return;
+    dragging = true;
+    handle.setPointerCapture?.(e.pointerId);
+
+    startY = e.clientY;
+    startBottom = getBottomPx();
+  }
+
+  function onMove(e){
+    if(!dragging || !isMobile()) return;
+
+    const dy = e.clientY - startY;      // arrastar pra baixo => dy positivo
+    let nextBottom = startBottom - dy;  // se arrastar pra cima, bottom aumenta
+
+    const {minBottom, maxBottom} = limits();
+    nextBottom = clamp(nextBottom, minBottom, maxBottom);
+
+    setBottomPx(nextBottom);
+  }
+
+  function onUp(){
+    dragging = false;
+  }
+
+  handle.addEventListener("pointerdown", onDown);
+  window.addEventListener("pointermove", onMove);
+  window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onUp);
+
+  // posição inicial boa no mobile
+  function resetIfMobile(){
+    if(isMobile()){
+      setBottomPx(12);
+    }else{
+      // volta pro comportamento desktop
+      dock.style.bottom = "";
+      dock.style.top = "88px";
+      dock.style.left = "";
+      dock.style.right = "18px";
+      dock.style.width = "340px";
+    }
+  }
+
+  window.addEventListener("resize", resetIfMobile);
+  resetIfMobile();
+})();
+
     // Start
     renderMiniCart();
   </script>
