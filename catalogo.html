@@ -321,6 +321,36 @@ border: 2px solid #0b0f14;}
   background: rgba(255,255,255,.18);
   border: 1px solid rgba(255,255,255,.12);
 }
+
+.cartToggleBtn{
+  width:44px;
+  height:38px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(135deg, rgba(7,116,179,.95), rgba(59,77,235,.85));
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 14px 28px rgba(7,116,179,.22);
+}
+.cartToggleBtn:hover{opacity:.96; transform: translateY(-1px);}
+.cartToggleBtn:active{opacity:.9; transform: translateY(0);}
+
+.cartDock.isMin .cartBody,
+.cartDock.isMin .cartFoot{
+  display:none;
+}
+
+/* quando minimiza, fica compacta e bem visível */
+.cartDock.isMin{
+  max-height:none;
+}
+.cartDock.isMin .cartPanel{
+  border-radius:18px;
+}
 }
 
   </style>
