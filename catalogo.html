@@ -601,22 +601,28 @@ initCarrosseis();
   window.addEventListener("pointercancel", onUp);
 
   // posição inicial boa no mobile
-  function resetIfMobile(){
-    if(isMobile()){
-      setBottomPx(12);
-    }else{
-      // volta pro comportamento desktop
-      dock.style.bottom = "";
-      dock.style.top = "88px";
-      dock.style.left = "";
-      dock.style.right = "18px";
-      dock.style.width = "340px";
-    }
-  }
+  function resetPosition(){
+  // posição inicial “boa” em qualquer tela
+  // (você pode mudar esses números depois)
+  setBottomPx(12);
 
-  window.addEventListener("resize", resetIfMobile);
-  resetIfMobile();
-})();
+  // garante que o drag vai mandar (não briga com top)
+  dock.style.top = "auto";
+
+  // em desktop, mantém na direita igual antes
+  if(window.innerWidth > 860){
+    dock.style.left = "auto";
+    dock.style.right = "18px";
+    dock.style.width = "340px";
+  }else{
+    // mobile: ocupa a largura
+    dock.style.right = "12px";
+    dock.style.left = "12px";
+    dock.style.width = "auto";
+  }
+}
+window.addEventListener("resize", resetPosition);
+resetPosition();
 
     // Start
     renderMiniCart();
