@@ -171,6 +171,7 @@
       .contentWithCart{padding-right:0;padding-bottom: 240px;}
     }
     /* FOTO DO PRODUTO */
+
 .prod-img{
   width:100%;
   height:180px;
@@ -282,6 +283,36 @@ border: 2px solid #0b0f14;}
 .dragBottom:active{ cursor: grabbing; }
 
 /* Barrinha visual */
+.dragBottom::before{
+  content:"";
+  width: 54px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+/* Pegadores de arrasto (PC + celular) */
+#dragHandle{
+  cursor: grab;
+  user-select:none;
+  touch-action: none;
+}
+#dragHandle:active{ cursor: grabbing; }
+
+.dragBottom{
+  height: 22px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor: grab;
+  user-select:none;
+  touch-action: none;
+}
+.dragBottom:active{ cursor: grabbing; }
+
 .dragBottom::before{
   content:"";
   width: 54px;
