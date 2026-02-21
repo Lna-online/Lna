@@ -230,6 +230,35 @@ border: 2px solid #0b0f14;}
 .dotMini.active{
   background:rgba(255,255,255,.75);
 }
+
+/* ===== DRAG MOBILE (ABA ARRASTÁVEL) ===== */
+#dragHandle{
+  touch-action:none; /* importante pra arrastar no celular */
+  cursor: grab;
+}
+#dragHandle:active{ cursor: grabbing; }
+
+/* “alça” visual (opcional, mas ajuda muito) */
+#dragHandle::after{
+  content:"";
+  display:block;
+  width:46px;
+  height:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.25);
+  margin:10px auto 0;
+}
+
+/* No mobile: vamos permitir mover pela tela */
+@media(max-width:860px){
+  .cartDock{
+    top:auto;              /* vamos controlar via JS */
+    bottom:12px;           /* posição inicial */
+    right:12px;
+    left:12px;
+    width:auto;
+  }
+}
   </style>
 </head>
 
