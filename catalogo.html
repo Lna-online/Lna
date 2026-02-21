@@ -495,6 +495,27 @@ initCarrosseis();
     // Start
     renderMiniCart();
   </script>
+
+   <div class="card-inner">
+
+    <div class="carousel" data-carousel data-imgs='${JSON.stringify(p.imgs || [])}'>
+      <img src="${(p.imgs && p.imgs[0]) ? p.imgs[0] : 'img/sem-foto.png'}"
+           alt="${p.nome}"
+           data-img
+           onerror="this.src='img/sem-foto.png'">
+
+      ${(p.imgs && p.imgs.length > 1) ? `
+        <button class="carBtn carPrev" type="button" data-prev><</button>
+        <button class="carBtn carNext" type="button" data-next>></button>
+        <div class="dots" data-dots></div>
+      ` : ``}
+    </div>
+
+    <div style="font-weight:900;font-size:18px;">${p.nome}</div>
+    <div class="small" style="margin-top:6px;">${p.desc || ""}</div>
+    <div class="price">${moneyBR(p.preco)}</div>
+
+    <div class="sep"></div>
 </body>
 </html>
 
