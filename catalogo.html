@@ -577,7 +577,7 @@ initCarrosseis();
   }
 
   function onMove(e){
-    if(!canDrag()) return;
+    if(!dragging || !canDrag()) return;
 
     const dy = e.clientY - startY;      // arrastar pra baixo => dy positivo
     let nextBottom = startBottom - dy;  // se arrastar pra cima, bottom aumenta
