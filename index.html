@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LNA Smartwatch | Orçamento</title>
+  <meta name="description" content="Monte seu pedido e gere orçamento em PDF. Pagamento na entrega.">
+
+  <style>
+    :root{
+      --bg:#0c0b14; --card:#121925; --muted:#a8b3c7; --text:#eaf0ff;
+      --brand:#3b4deb; --brand2:#0774b3; --line:rgba(255,255,255,.08);
+      --shadow:0 20px 50px rgba(0,0,0,.35); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial;
+      background: radial-gradient(1200px 600px at 70% -50%, rgba(7,116,179,.35), transparent 60%),
+                  radial-gradient(900px 500px at 10% 10%, rgba(59,77,235,.25), transparent 55%),
+                  var(--bg);
+      color:var(--text); line-height:1.35;
+    }
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:22px}
+    .topbar{position:sticky;top:0;z-index:10;backdrop-filter: blur(10px);
+      background:rgba(11,15,20,.65);border-bottom:1px solid var(--line);}
+    .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 22px;max-width:1100px;margin:0 auto;}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.2px;}
+    .logo-img{width:36px;height:36px;object-fit:contain;filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));}
+    .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.03);}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;border-radius:14px;text-decoration:none;border:1px solid transparent;font-weight:900;cursor:pointer;transition:.15s transform,.15s opacity,.15s box-shadow;user-select:none;}
+    .btn:hover{transform:translateY(-1px);opacity:.98}
+    .btn:active{transform:translateY(0px);opacity:.9}
+    .btn-primary{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;box-shadow:0 18px 35px rgba(7,116,179,.22);}
+    .btn-outline{background:transparent;border-color:var(--line);color:var(--text);}
+    .grid{display:grid;gap:18px}
+    .hero{padding:26px 0 12px}
+    .hero-grid{grid-template-columns:1.15fr .85fr;align-items:stretch}
+    @media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+    .card{background:rgba(18,25,37,.85);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+    .card-inner{padding:22px}
+    .kicker{display:inline-flex;gap:10px;align-items:center;color:var(--muted);font-weight:800;font-size:13px;border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.03);}
+    h1{margin:14px 0 10px;font-size:40px;line-height:1.05}
+    @media (max-width:520px){h1{font-size:32px}}
+    .sub{color:var(--muted);font-size:16px;max-width:56ch}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .trust{margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+    .trust span{display:inline-flex;gap:8px;align-items:center}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.14)}
+    .media{min-height:320px;background: radial-gradient(600px 300px at 60% 10%, rgba(59,77,235,.20), transparent 60%),
+                           radial-gradient(700px 300px at 30% 30%, rgba(7,116,179,.22), transparent 60%),
+                           linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0));
+      display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;}
+    .media .box{width:100%;max-width:430px;border:1px dashed rgba(255,255,255,.18);border-radius:16px;padding:18px;color:var(--muted);}
+    section{padding:18px 0}
+    .section-title{font-size:22px;margin:0 0 8px}
+    .section-sub{color:var(--muted);margin:0 0 16px}
+    .sep{height:1px;background:var(--line);margin:16px 0}
+    .two{grid-template-columns:1fr 1fr}
+    @media (max-width:900px){.two{grid-template-columns:1fr}}
+    input,select{width:100%;padding:12px 12px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.18);color:var(--text);outline:none;}
+    label{font-size:12px;color:var(--muted);font-weight:800}
+    .small{font-size:12px;color:var(--muted)}
+    .pill{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.03);display:inline-flex;gap:8px;align-items:center;}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+    th{color:var(--muted);font-size:12px}
+    .right{text-align:right}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .totalBox{display:flex;justify-content:space-between;align-items:center;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.03);margin-top:12px;}
+    .totalBox b{font-size:18px}
+    .hide{display:none !important}
+    .floating{position:fixed;right:16px;bottom:16px;z-index:50;border-radius:999px;padding:14px 16px;box-shadow:0 18px 40px rgba(7,116,179,.25);}
+    .footer{padding:26px 0 50px;color:rgba(255,255,255,.5);font-size:12px;}
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <img src="logo.png" alt="LNA" class="logo-img">
+        <div>
+          <div style="font-size:14px;">LNA Smartwatch</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:800;">Orçamento em PDF • Pagamento na entrega</div>
+        </div>
+      </div>
+      <div class="badge">Sem pagamento online</div>
+    </div>
+  </div>
+
+  <div class="container hero">
+    <div class="grid hero-grid">
+      <div class="card">
+        <div class="card-inner">
+          <div class="kicker">✅ Monte o pedido • Gere PDF</div>
+          <h1>Faça seu pedido e gere o orçamento</h1>
+          <p class="sub">Você escolhe os itens, gera um PDF e paga <b>na entrega</b>.</p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#orcamento">Fazer orçamento agora</a>
+            <a class="btn btn-outline" href="catalogo.html">Ver catálogo</a>
+          </div>
+
+          <div class="trust">
+            <span><span class="dot"></span> PDF do pedido</span>
+            <span><span class="dot"></span> PIX / Cartão / Dinheiro</span>
+            <span><span class="dot"></span> Pagamento na entrega</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="media">
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="img/u4 plus capa.jpg"
+            style="width:100%;max-width:430px;border-radius:16px;border:1px solid rgba(255,255,255,.18);">
+            <source src="video/U4 PLUS.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeo.
+          </video>
+        </div>
+        <div class="card-inner">
+          <b>Como funciona</b>
+          <p class="small" style="margin:8px 0 0;">
+            • Você monta o pedido<br/>
+            • Gera o PDF do orçamento<br/>
+            • Eu confirmo e entrego<br/>
+            • Você paga na entrega
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section id="orcamento">
+      <h2 class="section-title">Seu pedido</h2>
+      <p class="section-sub">Os itens vêm do catálogo.</p>
+
+      <div class="grid two">
+        <div class="card">
+          <div class="card-inner">
+            <div class="row" style="justify-content:space-between;">
+              <div class="pill">🧾 Itens do pedido</div>
+              <button class="btn btn-outline" id="btnLimpar" type="button">Limpar</button>
+            </div>
+
+            <div class="sep"></div>
+
+            <div style="overflow:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th class="right">Qtd</th>
+                    <th class="right">Valor</th>
+                    <th class="right">Subtotal</th>
+                    <th class="right">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="itensTbody"></tbody>
+              </table>
+            </div>
+
+            <div class="totalBox">
+              <div>
+                <div class="small">Total</div>
+                <div class="small">Pagamento na entrega</div>
+              </div>
+              <b id="totalTxt">R$ 0,00</b>
+            </div>
+
+            <div class="small" style="margin-top:10px;">
+              * Clique em <b>Ver catálogo</b> para adicionar produtos.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-inner">
+            <h2 class="section-title" style="margin:0 0 8px;">Dados para entrega</h2>
+            <p class="section-sub" style="margin:0 0 16px;">* Todos os campos abaixo são obrigatórios (exceto Observações).</p>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
+              <div>
+                <label for="clienteNome">Nome</label>
+                <input id="clienteNome" placeholder="Ex: Francisco" />
+              </div>
+              <div>
+                <label for="clienteWhats">WhatsApp</label>
+                <input id="clienteWhats"
+       placeholder="Ex: 47999999999"
+       inputmode="numeric"
+       autocomplete="tel"
+       maxlength="13" />
+              </div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1.2fr .6fr; gap:12px; margin-top:12px;">
+              <div>
+                <label for="clienteRua">Rua</label>
+                <input id="clienteRua" placeholder="Ex: Rua João Silva" />
+              </div>
+              <div>
+                <label for="clienteNumero">Número</label>
+                <input id="clienteNumero"
+       placeholder="Ex: 123"
+       inputmode="numeric"
+       maxlength="10" />
+              </div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;">
+              <div>
+                <label for="clienteBairro">Bairro</label>
+                <input id="clienteBairro" placeholder="Ex: Centro" />
+              </div>
+              <div>
+                <label for="clienteCidade">Cidade</label>
+                <input id="clienteCidade" placeholder="Ex: Itajaí" />
+              </div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;">
+              <div>
+                <label for="pagamento">Forma de pagamento</label>
+                <select id="pagamento">
+                  <option value="PIX">PIX</option>
+                  <option value="Cartão de Crédito">Cartão de Crédito</option>
+                  <option value="Cartão de Débito">Cartão de Débito</option>
+                  <option value="Dinheiro">Dinheiro</option>
+                </select>
+              </div>
+              <div id="trocoBox" class="hide">
+                <label for="troco">Precisa de troco para quanto?</label>
+                <input id="troco" placeholder="Ex: 200,00" inputmode="decimal" />
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label for="obs">Observações</label>
+              <input id="obs" placeholder="Ex: Entregar após 18h" />
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="row">
+              <button class="btn btn-primary" id="btnPdf" type="button">📄 Gerar PDF do Orçamento</button>
+              <button class="btn btn-outline" id="btnResumoWhats" type="button">📲 Enviar resumo no WhatsApp</button>
+            </div>
+
+            <div class="small" id="avisoObrigatorios" style="margin-top:8px;color:#ffd6d7;"></div>
+
+            <div class="small" style="margin-top:10px;">
+              No PDF vai aparecer: <b>PAGAMENTO NA ENTREGA</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="sep"></div>
+      <div>© <span id="year"></span> LNA Smartwatch — Todos os direitos reservados.</div>
+      <div class="small">Coloque <b>logo.png</b> na mesma pasta dos arquivos.</div>
+    </div>
+  </div>
+
+  <a class="btn btn-primary floating" id="floatWhats" target="_blank" rel="noopener">💬 Falar no WhatsApp</a>
+
+  <script>
+    const WHATSAPP_NUMBER = "5547988906447";
+    const waLink = (text) => "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+    document.getElementById("floatWhats").href = waLink("Olá! Tenho uma dúvida sobre a LNA Smartwatch.");
+
+    const STORAGE_KEY = "LNA_CART";
+    const itens = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    const tbody = document.getElementById("itensTbody");
+    const totalTxt = document.getElementById("totalTxt");
+    const btnResumoWhats = document.getElementById("btnResumoWhats");
+    const avisoObrigatorios = document.getElementById("avisoObrigatorios");
+
+    function moneyBR(v){ return v.toLocaleString("pt-BR", { style:"currency", currency:"BRL" }); }
+    function calcTotal(){ return itens.reduce((acc, it) => acc + (it.preco * it.qtd), 0); }
+    function saveCart(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(itens)); }
+
+    function render(){
+      tbody.innerHTML = "";
+      itens.forEach((it, idx) => {
+        const subtotal = it.preco * it.qtd;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${it.nome}</td>
+          <td class="right">${it.qtd}</td>
+          <td class="right">${moneyBR(it.preco)}</td>
+          <td class="right">${moneyBR(subtotal)}</td>
+          <td class="right">
+            <button class="btn btn-outline" style="padding:8px 10px;border-radius:12px;" data-del="${idx}">Remover</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      totalTxt.textContent = moneyBR(calcTotal());
+      updateResumoWhatsState();
+      tbody.querySelectorAll("[data-del]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = Number(btn.getAttribute("data-del"));
+          itens.splice(i, 1);
+          saveCart();
+          render();
+        });
+      });
+    }
+
+    document.getElementById("btnLimpar").addEventListener("click", () => {
+      itens.length = 0;
+      saveCart();
+      render();
+    });
+
+    const pagamentoEl = document.getElementById("pagamento");
+    const trocoBox = document.getElementById("trocoBox");
+    const trocoEl = document.getElementById("troco");
+    function updateTroco(){
+      const isDinheiro = pagamentoEl.value === "Dinheiro";
+      trocoBox.classList.toggle("hide", !isDinheiro);
+      if(!isDinheiro) trocoEl.value = "";
+      updateResumoWhatsState();
+    }
+    pagamentoEl.addEventListener("change", updateTroco);
+    updateTroco();
+
+    async function loadLogoDataURL(path){
+      const res = await fetch(path);
+      const blob = await res.blob();
+      return await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function exigirCamposObrigatorios() {
+      if (itens.length === 0) { alert("Adicione pelo menos 1 item no pedido (no catálogo)."); return false; }
+
+      const nome = document.getElementById("clienteNome").value.trim();
+      const whats = document.getElementById("clienteWhats").value.trim();
+      const rua = document.getElementById("clienteRua").value.trim();
+      const numero = document.getElementById("clienteNumero").value.trim();
+      const bairro = document.getElementById("clienteBairro").value.trim();
+      const cidade = document.getElementById("clienteCidade").value.trim();
+      const pagamento = pagamentoEl.value;
+      const troco = trocoEl.value.trim();
+
+      if (!nome) { alert("Preencha o Nome."); return false; }
+      if (!whats) { alert("Preencha o WhatsApp."); return false; }
+if (whats.length !== 11) {
+  alert("WhatsApp inválido. Digite 11 números com DDD e o 9 (ex: 47999999999).");
+  return false;
+}
+
+// - 10 dígitos = fixo com DDD (ex: 4733334444) OU celular sem 9
+// - 11 dígitos = celular com DDD (ex: 47999999999)  ✅ mais comum
+      if (!rua) { alert("Preencha a Rua."); return false; }
+      if (!numero) { alert("Preencha o Número."); return false; }
+      if (!bairro) { alert("Preencha o Bairro."); return false; }
+      if (!cidade) { alert("Preencha a Cidade."); return false; }
+      if (pagamento === "Dinheiro" && !troco) { alert("Se o pagamento for em Dinheiro, informe o troco."); return false; }
+
+      return true;
+    }
+
+    function camposObrigatoriosFaltando() {
+      const nome = document.getElementById("clienteNome").value.trim();
+      const whats = document.getElementById("clienteWhats").value.trim();
+      const rua = document.getElementById("clienteRua").value.trim();
+      const numero = document.getElementById("clienteNumero").value.trim();
+      const bairro = document.getElementById("clienteBairro").value.trim();
+      const cidade = document.getElementById("clienteCidade").value.trim();
+      const pagamento = pagamentoEl.value;
+      const troco = trocoEl.value.trim();
+      const faltando = [];
+
+      if (itens.length === 0) faltando.push("1 item no pedido");
+      if (!nome) faltando.push("Nome");
+      if (!whats) faltando.push("WhatsApp");
+      if (!rua) faltando.push("Rua");
+      if (!numero) faltando.push("Numero");
+      if (!bairro) faltando.push("Bairro");
+      if (!cidade) faltando.push("Cidade");
+      if (pagamento === "Dinheiro" && !troco) faltando.push("Troco");
+
+      return faltando;
+    }
+
+    function camposObrigatoriosPreenchidos() {
+      return camposObrigatoriosFaltando().length === 0;
+    }
+
+    function updateResumoWhatsState() {
+      const faltando = camposObrigatoriosFaltando();
+      btnResumoWhats.disabled = faltando.length > 0;
+      avisoObrigatorios.textContent = faltando.length > 0
+        ? `Preencha os campos obrigatorios: ${faltando.join(", ")}.`
+        : "";
+    }
+
+    function limparDadosAposPdf({ limparCarrinho = false } = {}) {
+      document.getElementById("clienteNome").value = "";
+      document.getElementById("clienteWhats").value = "";
+      document.getElementById("clienteRua").value = "";
+      document.getElementById("clienteNumero").value = "";
+      document.getElementById("clienteBairro").value = "";
+      document.getElementById("clienteCidade").value = "";
+      document.getElementById("obs").value = "";
+
+      pagamentoEl.value = "PIX";
+      trocoEl.value = "";
+      trocoBox.classList.add("hide");
+
+      if (limparCarrinho) {
+        localStorage.setItem(STORAGE_KEY, "[]");
+        itens.length = 0;
+        saveCart();
+        render();
+      }
+
+      updateResumoWhatsState();
+    }
+
+    document.getElementById("btnPdf").addEventListener("click", async () => {
+      if (!exigirCamposObrigatorios()) return;
+
+      const nome = document.getElementById("clienteNome").value.trim();
+      const whats = document.getElementById("clienteWhats").value.trim();
+      const rua = document.getElementById("clienteRua").value.trim();
+      const numero = document.getElementById("clienteNumero").value.trim();
+      const bairro = document.getElementById("clienteBairro").value.trim();
+      const cidade = document.getElementById("clienteCidade").value.trim();
+      const obs = document.getElementById("obs").value.trim();
+      const pagamento = pagamentoEl.value;
+      const troco = (pagamento === "Dinheiro") ? (trocoEl.value || "").trim() : "";
+
+      const now = new Date();
+      const orderId = "LNA-" + now.getFullYear().toString().slice(2)
+        + String(now.getMonth()+1).padStart(2,"0")
+        + String(now.getDate()).padStart(2,"0")
+        + "-" + Math.floor(1000 + Math.random()*9000);
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit:"mm", format:"a4" });
+
+      let logoData = null;
+      try{ logoData = await loadLogoDataURL("Logopdf.png"); }catch(e){}
+      if(logoData){ doc.addImage(logoData, "PNG", 14, 10, 18, 18); }
+
+      doc.setFont("helvetica","bold"); doc.setFontSize(18);
+      doc.text("LNA SMARTWATCH", 36, 18);
+
+      doc.setFont("helvetica","normal"); doc.setFontSize(10);
+      doc.text(`Orçamento: ${orderId}`, 36, 24);
+      doc.text(`Data: ${now.toLocaleString("pt-BR")}`, 36, 29);
+
+      let y = 42;
+      doc.setDrawColor(200); doc.line(14, y, 196, y); y += 8;
+
+      doc.setFont("helvetica","bold"); doc.setFontSize(12);
+      doc.text("Dados do Cliente", 14, y); y += 7;
+
+      doc.setFont("helvetica","normal"); doc.setFontSize(10);
+      doc.text(`Nome: ${nome}`, 14, y); y += 6;
+      doc.text(`WhatsApp: ${whats}`, 14, y); y += 6;
+      doc.text(`Endereço: ${rua}, Nº ${numero}`, 14, y); y += 6;
+      doc.text(`Bairro: ${bairro}`, 14, y); y += 6;
+      doc.text(`Cidade: ${cidade}`, 14, y); y += 6;
+      if(obs){ doc.text(`Obs: ${obs}`, 14, y); y += 6; }
+
+      y += 4; doc.line(14, y, 196, y); y += 10;
+
+      doc.setFont("helvetica","bold"); doc.setFontSize(12);
+      doc.text("Pedido", 14, y); y += 8;
+
+      doc.setFontSize(10);
+      doc.text("Item", 14, y);
+      doc.text("Qtd", 120, y, { align:"right" });
+      doc.text("Valor", 150, y, { align:"right" });
+      doc.text("Subtotal", 196, y, { align:"right" });
+      y += 4; doc.line(14, y, 196, y); y += 7;
+
+      doc.setFont("helvetica","normal");
+      itens.forEach((it) => {
+        const subtotal = it.preco * it.qtd;
+        if(y > 265){ doc.addPage(); y = 20; }
+        doc.text(it.nome, 14, y);
+        doc.text(String(it.qtd), 120, y, { align:"right" });
+        doc.text(moneyBR(it.preco), 150, y, { align:"right" });
+        doc.text(moneyBR(subtotal), 196, y, { align:"right" });
+        y += 7;
+      });
+
+      const total = calcTotal();
+      y += 2; doc.line(14, y, 196, y); y += 10;
+
+      doc.setFont("helvetica","bold"); doc.setFontSize(12);
+      doc.text("Total:", 150, y, { align:"right" });
+      doc.text(moneyBR(total), 196, y, { align:"right" });
+
+      y += 12;
+      doc.setFont("helvetica","normal"); doc.setFontSize(11);
+      doc.text(`Forma de pagamento: ${pagamento}`, 14, y); y += 7;
+
+      if(pagamento === "Dinheiro"){
+        doc.text(`Troco: R$ ${troco}`, 14, y);
+        y += 7;
+      }
+
+      doc.setFont("helvetica","bold");
+      doc.text("PAGAMENTO NA ENTREGA", 14, y);
+
+      doc.save(`orcamento-${orderId}.pdf`);
+      limparDadosAposPdf({ limparCarrinho: false });
+    });
+
+    document.getElementById("btnResumoWhats").addEventListener("click", () => {
+      if (!exigirCamposObrigatorios()) return;
+
+      const nome = document.getElementById("clienteNome").value.trim();
+      const whats = document.getElementById("clienteWhats").value.trim();
+      const rua = document.getElementById("clienteRua").value.trim();
+      const numero = document.getElementById("clienteNumero").value.trim();
+      const bairro = document.getElementById("clienteBairro").value.trim();
+      const cidade = document.getElementById("clienteCidade").value.trim();
+      const obs = document.getElementById("obs").value.trim();
+      const pagamento = pagamentoEl.value;
+      const troco = (pagamento === "Dinheiro") ? (trocoEl.value || "").trim() : "";
+
+      const linhas = itens.map(it => `- ${it.nome} (x${it.qtd}) = ${moneyBR(it.preco * it.qtd)}`).join("\n");
+      const total = moneyBR(calcTotal());
+
+      const msg =
+`Olá! Quero fechar um pedido na LNA SMARTWATCH.
+
+Cliente: ${nome}
+WhatsApp: ${whats}
+Endereço: ${rua}, Nº ${numero}
+Bairro: ${bairro}
+Cidade: ${cidade}${obs ? `\nObs: ${obs}` : ""}
+
+Pedido:
+${linhas}
+
+Total: ${total}
+Forma de pagamento: ${pagamento}${pagamento === "Dinheiro" ? `\nTroco: R$ ${troco}` : ""}
+
+PAGAMENTO NA ENTREGA`;
+
+      window.open(waLink(msg), "_blank", "noopener");
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+function apenasNumeros(el) {
+  el.addEventListener("input", () => {
+    el.value = el.value.replace(/\D/g, ""); // remove tudo que não for número
+  });
+
+  el.addEventListener("paste", () => {
+    setTimeout(() => {
+      el.value = el.value.replace(/\D/g, "");
+    }, 0);
+  });
+}
+function apenasNumeroEVirgula(el) {
+  el.addEventListener("input", () => {
+    el.value = el.value
+      .replace(/[^\d,]/g, "")     // só número e vírgula
+      .replace(/(,.*),/g, "$1");  // só 1 vírgula
+  });
+
+  el.addEventListener("paste", () => {
+    setTimeout(() => {
+      el.value = el.value
+        .replace(/[^\d,]/g, "")
+        .replace(/(,.*),/g, "$1");
+    }, 0);
+  });
+}
+
+apenasNumeroEVirgula(document.getElementById("troco"));
+apenasNumeros(document.getElementById("clienteWhats"));
+apenasNumeros(document.getElementById("clienteNumero"));
+
+[
+  "clienteNome",
+  "clienteWhats",
+  "clienteRua",
+  "clienteNumero",
+  "clienteBairro",
+  "clienteCidade",
+  "troco"
+].forEach((id) => {
+  document.getElementById(id).addEventListener("input", updateResumoWhatsState);
+  document.getElementById(id).addEventListener("blur", updateResumoWhatsState);
+});
+
+render();
+updateResumoWhatsState();
+  </script>
+</body>
+</html>

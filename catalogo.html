@@ -1,0 +1,500 @@
+﻿<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LNA Smartwatch | Catálogo</title>
+  <meta name="description" content="Catálogo LNA Smartwatch. Monte seu pedido e finalize orÃ§amento.">
+
+  <style>
+    :root{
+      --bg:#0b0f14; --card:#121925; --muted:#a8b3c7; --text:#eaf0ff;
+      --brand:#3b4deb; --brand2:#0774b3; --line:rgba(255,255,255,.08);
+      --shadow:0 20px 50px rgba(0,0,0,.35); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial;
+      background: radial-gradient(1200px 600px at 70% -50%, rgba(7,116,179,.35), transparent 60%),
+                  radial-gradient(900px 500px at 10% 10%, rgba(59,77,235,.25), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:22px}
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background:rgba(11,15,20,.65);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .wrap{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:14px 22px; max-width:1100px; margin:0 auto;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.2px;}
+    .logo-img{width:36px;height:36px;object-fit:contain;filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));}
+    .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.03);}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;border-radius:14px;text-decoration:none;border:1px solid transparent;font-weight:900;cursor:pointer;transition:.15s transform,.15s opacity,.15s box-shadow;user-select:none;}
+    .btn:hover{transform:translateY(-1px);opacity:.98}
+    .btn:active{transform:translateY(0px);opacity:.9}
+    .btn-primary{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;box-shadow:0 18px 35px rgba(7,116,179,.22);}
+    .btn-outline{background:transparent;border-color:var(--line);color:var(--text);}
+    .grid{display:grid;gap:18px}
+    .cards{grid-template-columns:repeat(3,1fr)}
+    @media(max-width:1050px){.cards{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:680px){.cards{grid-template-columns:1fr}}
+    .card{background:rgba(18,25,37,.85);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+    .card-inner{padding:18px}
+    h1{margin:0 0 6px;font-size:28px}
+    .sub{margin:0;color:var(--muted)}
+    .sep{height:1px;background:var(--line);margin:16px 0}
+    .price{font-weight:900;font-size:22px;margin:10px 0 0}
+    .small{font-size:12px;color:var(--muted)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    input,select{
+      width:90px;padding:10px;border-radius:12px;border:1px solid var(--line);
+      background:rgba(0,0,0,.18);color:var(--text);outline:none;
+    }
+
+    /* ===== MINI CARRINHO LATERAL ===== */
+    .cartDock{
+      position:fixed;
+      right:18px;
+      top:88px;
+      width:340px;
+      max-height: calc(100vh - 110px);
+      z-index:50;
+    }
+    @media(max-width:1100px){
+      .cartDock{width:320px}
+    }
+    @media(max-width:860px){
+      /* no celular vira barra fixa embaixo */
+      .cartDock{
+        right:12px; left:12px; width:auto;
+        top:auto; bottom:12px;
+        max-height: 55vh;
+      }
+    }
+    .cartPanel{
+      background:rgba(18,25,37,.92);
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .cartHead{
+      padding:14px 14px 12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+    }
+    .cartTitle{
+      font-weight:900;
+      display:flex; gap:10px; align-items:center;
+    }
+    .countPill{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.03);
+    }
+    .cartBody{
+      padding:12px 14px;
+      overflow:auto;
+      max-height: 50vh;
+    }
+    .cartItem{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;
+      padding:10px 10px;
+      margin-bottom:10px;
+    }
+    .cartItemTop{
+      display:flex; justify-content:space-between; gap:10px;
+      font-weight:800;
+    }
+    .cartItemSub{
+      margin-top:6px;
+      display:flex; justify-content:space-between; gap:10px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .miniBtns{
+      display:flex; gap:8px; align-items:center;
+      margin-top:10px;
+    }
+    .miniBtn{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
+    }
+    .miniBtn:hover{opacity:.95}
+    .miniBtnDanger{
+      border-color:rgba(255,90,95,.35);
+      color:#ffd6d7;
+    }
+    .cartFoot{
+      padding:12px 14px 14px;
+      border-top:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+    }
+    .totalRow{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+      margin-bottom:10px;
+    }
+    .totalRow b{font-size:16px}
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    /* dar espaÃ§o na direita pra nÃ£o ficar por trÃ¡s do carrinho */
+    .contentWithCart{
+      padding-right: 380px;
+    }
+    @media(max-width:860px){
+      .contentWithCart{padding-right:0;padding-bottom: 240px;}
+    }
+    /* FOTO DO PRODUTO */
+.prod-img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  margin-bottom:10px;
+}
+
+.carousel{
+  position:relative;
+  margin-bottom:10px;
+}
+.carousel img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  display:block;
+}
+.carBtn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.35);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.carBtn:hover{opacity:.95}
+.carPrev{left:10px;
+  background:#970b8c9d;
+  border: 2px solid #12f343;
+}
+.carNext{right:10px;
+background-color: #44baff9d;
+border: 2px solid #0b0f14;}
+
+.dots{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  margin-top:8px;
+}
+.dotMini{
+  width:7px;height:7px;border-radius:999px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.12);
+}
+.dotMini.active{
+  background:rgba(255,255,255,.75);
+}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <img src="logo.png" alt="LNA" class="logo-img">
+        <div>
+          <div style="font-size:14px;">LNA Smartwatch</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:800;">Catálogo</div>
+        </div>
+      </div>
+      <div class="badge">Monte seu pedido</div>
+    </div>
+  </div>
+
+  <!-- MINI CARRINHO (LATERAL) -->
+  <div class="cartDock">
+    <div class="cartPanel">
+      <div class="cartHead">
+        <div class="cartTitle">Orçamento do Pedido</div>
+        <div class="countPill"><span id="cartCount">0</span> itens</div>
+      </div>
+
+      <div class="cartBody" id="cartBody">
+        <div class="small">Seu carrinho esta vazio. Adicione produtos</div>
+      </div>
+
+      <div class="cartFoot">
+        <div class="totalRow">
+          <div class="small">Total</div>
+          <b id="cartTotal">R$ 0,00</b>
+        </div>
+
+        <div class="row" style="justify-content:space-between;">
+          <button class="btn btn-outline" id="btnLimpar" type="button" style="padding:12px 14px;">Limpar</button>
+          <a class="btn btn-primary" id="btnFinalizar" href="index.html#orcamento" style="padding:12px 14px;">Finalizar orçamento</a>
+        </div>
+
+        <div class="hint">Pagamento na entrega.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container contentWithCart">
+    <h1>Catálogo</h1>
+    <p class="sub">Adicione produtos e finalize quando quiser.</p>
+
+    <div class="sep"></div>
+    <div class="grid cards" id="lista"></div>
+
+    <div class="sep"></div>
+    <div class="small">Os itens ficam salvos no carrinho ate você limpar.</div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "LNA_CART";
+
+    // âœ… EDITE SEUS PRODUTOS AQUI (Catálogo fica nesta pÃ¡gina)
+    const PRODUTOS = [
+  { nome: "U4 | Microwear | Chat GPT | Series10", preco: 149.90, desc: "O U4 da Microwear um modelo versátil. Equipado com ChatGPT, GPS sincronizado ao celular, além dos modos Saúde e Esporte, ele atende a diversos perfis e preferencias.", imgs: [ "img/U4Microwear/1.png", "img/U4Microwear/2.png", "img/U4Microwear/3.png"], cores: ["Dourado", "Prata"]},
+  { nome: "S10 Microwear |ChatGPT em Português|Tradutor de Idiomas|Capinha + Pulseira de Silicone de Brinde", preco: 129.90, desc: "Novo S10 da Microwear surpreendente, conta com um designer mais fino, tela curva e com alta resolução e watch faces dinâmicas atualizadas e todo um sistema atualizado serie 10 recentemente lançado. Contando com novas funções como: Medidor de decibeis, tradutor de idiomas, chat GPT em português, e muito mais funções de saúde para agregar no seu dia.", imgs: [ "img/S10 Microwear/1.png", "img/S10 Microwear/2.png", "img/S10 Microwear/3.png"], cores: ["Preto"]},
+  { nome: "U4 PLUS MICROWEAR | AMOLED | Series 10", preco: 184.90, desc: "O U4 Plus da Microwear um smartwatch de design que se destaca com sua tela AMOLED. Saúde e Bem-estar: Monitoramento da temperatura corporal, ECG, oxímetro, monitor cardíaco, pressão arterial, monitoramento do sono, ciclo feminino.", imgs: [ "img/U4 Plus/1.png", "img/U4 Plus/2.jpg", "img/U4 Plus/3.jpg", "img/U4 Plus/4.jpg", "img/U4 Plus/5.jpg", "img/U4 Plus/6.jpg", "img/U4 Plus/7.jpg", "img/U4 Plus/8.png", "img/U4 Plus/9.jpg", "img/U4 Plus/10.jpg"], cores: ["Preto"]}
+];
+
+    function moneyBR(v){
+      return v.toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+    }
+
+    function getCart(){
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    }
+    function saveCart(cart){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+
+function addToCart(prod, qtd, cor){
+  const cart = getCart();
+  const found = cart.find(x => x.nome === prod.nome && x.preco === prod.preco && (x.cor || "") === (cor || ""));
+  if(found) found.qtd += qtd;
+  else cart.push({ nome: prod.nome, cor: cor || "", preco: prod.preco, qtd });
+  saveCart(cart);
+  renderMiniCart();
+}
+    function removeIndex(i){
+      const cart = getCart();
+      cart.splice(i, 1);
+      saveCart(cart);
+      renderMiniCart();
+    }
+
+    function changeQty(i, delta){
+      const cart = getCart();
+      if(!cart[i]) return;
+      cart[i].qtd = Math.max(1, (cart[i].qtd || 1) + delta);
+      saveCart(cart);
+      renderMiniCart();
+    }
+
+    function clearCart(){
+      saveCart([]);
+      renderMiniCart();
+    }
+
+    function calcTotal(cart){
+      return cart.reduce((acc, it) => acc + (it.preco * it.qtd), 0);
+    }
+
+    function renderMiniCart(){
+      const cart = getCart();
+      const body = document.getElementById("cartBody");
+      const totalEl = document.getElementById("cartTotal");
+      const countEl = document.getElementById("cartCount");
+
+      countEl.textContent = String(cart.reduce((acc, it) => acc + it.qtd, 0));
+      totalEl.textContent = moneyBR(calcTotal(cart));
+
+      if(cart.length === 0){
+        body.innerHTML = `<div class="small">Seu carrinho está vazio. Adicione produtos.</div>`;
+        return;
+      }
+
+      body.innerHTML = "";
+      cart.forEach((it, idx) => {
+        const subtotal = it.preco * it.qtd;
+        const nomeExibicao = it.cor ? `${it.nome} - ${it.cor}` : it.nome;
+
+        const div = document.createElement("div");
+        div.className = "cartItem";
+        div.innerHTML = `
+          <div class="cartItemTop">
+            <div>${nomeExibicao}</div>
+            <div>${moneyBR(subtotal)}</div>
+          </div>
+          <div class="cartItemSub">
+            <div>Qtd: <b style="color:#fff">${it.qtd}</b></div>
+            <div>${moneyBR(it.preco)} cada</div>
+          </div>
+          <div class="miniBtns">
+            <button class="miniBtn" data-dec="${idx}">-</button>
+            <button class="miniBtn" data-inc="${idx}">+</button>
+            <button class="miniBtn miniBtnDanger" data-del="${idx}">Remover</button>
+          </div>
+        `;
+        body.appendChild(div);
+      });
+
+      body.querySelectorAll("[data-dec]").forEach(b => b.addEventListener("click", () => changeQty(Number(b.dataset.dec), -1)));
+      body.querySelectorAll("[data-inc]").forEach(b => b.addEventListener("click", () => changeQty(Number(b.dataset.inc), +1)));
+      body.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => removeIndex(Number(b.dataset.del))));
+    }
+
+    // BotÃµes do mini carrinho
+    document.getElementById("btnLimpar").addEventListener("click", clearCart);
+
+    // Render Catálogo
+    const lista = document.getElementById("lista");
+    PRODUTOS.forEach((p) => {
+      const card = document.createElement("div");
+      card.className = "card";
+card.innerHTML = `
+  <div class="card-inner">
+
+    <div class="carousel" data-carousel data-imgs='${JSON.stringify(p.imgs || [])}'>
+      <img src="${(p.imgs && p.imgs[0]) ? p.imgs[0] : 'img/sem-foto.png'}"
+           alt="${p.nome}"
+           data-img
+           onerror="this.src='img/sem-foto.png'">
+
+      ${(p.imgs && p.imgs.length > 1) ? `
+        <button class="carBtn carPrev" type="button" data-prev><</button>
+        <button class="carBtn carNext" type="button" data-next>></button>
+        <div class="dots" data-dots></div>
+      ` : ``}
+    </div>
+
+    <div style="font-weight:900;font-size:18px;">${p.nome}</div>
+    <div class="small" style="margin-top:6px;">${p.desc || ""}</div>
+    <div class="price">${moneyBR(p.preco)}</div>
+
+    <div class="sep"></div>
+
+    <div class="row">
+      <div>
+        <div class="small" style="margin-bottom:6px;">Cor</div>
+        <select class="corSelect">
+          ${(p.cores || ["Unica"]).map((cor) => `<option value="${cor}">${cor}</option>`).join("")}
+        </select>
+      </div>
+      <div>
+        <div class="small" style="margin-bottom:6px;">Qtd</div>
+        <input type="number" min="1" value="1">
+      </div>
+     <button class="btn btn-primary addBtn" type="button">+ Adicionar</button>
+    </div>
+
+    <div class="small" style="margin-top:10px;">Pagamento na entrega.</div>
+  </div>
+`;
+
+      const input = card.querySelector("input");
+      const corSelect = card.querySelector(".corSelect");
+      const btn = card.querySelector(".addBtn");
+
+btn.addEventListener("click", () => {
+  const qtd = Math.max(1, Number(input.value || 1));
+  addToCart(p, qtd, corSelect ? corSelect.value : "");
+});
+
+      lista.appendChild(card);
+    });
+
+    function initCarrosseis(){
+  document.querySelectorAll("[data-carousel]").forEach((carouselEl) => {
+
+    // pega as imgs pelo atributo que colocamos no HTML
+    const imgs = JSON.parse(carouselEl.getAttribute("data-imgs") || "[]");
+    if (imgs.length <= 1) return;
+
+    const imgEl = carouselEl.querySelector("[data-img]");
+    const btnPrev = carouselEl.querySelector("[data-prev]");
+    const btnNext = carouselEl.querySelector("[data-next]");
+    const dotsWrap = carouselEl.querySelector("[data-dots]");
+
+    let current = 0;
+
+    // cria bolinhas
+    dotsWrap.innerHTML = "";
+    imgs.forEach((_, i) => {
+      const dot = document.createElement("div");
+      dot.className = "dotMini" + (i === 0 ? " active" : "");
+      dot.addEventListener("click", () => { current = i; update(); });
+      dotsWrap.appendChild(dot);
+    });
+
+    const dots = dotsWrap.querySelectorAll(".dotMini");
+
+    function update(){
+      imgEl.src = imgs[current];
+      dots.forEach(d => d.classList.remove("active"));
+      dots[current].classList.add("active");
+    }
+
+    btnPrev.addEventListener("click", () => {
+      current = (current - 1 + imgs.length) % imgs.length;
+      update();
+    });
+
+    btnNext.addEventListener("click", () => {
+      current = (current + 1) % imgs.length;
+      update();
+
+      btnPrev.addEventListener("click", (e) => e.stopPropagation());
+btnNext.addEventListener("click", (e) => e.stopPropagation());
+    });
+
+  });
+}
+
+initCarrosseis();
+
+    // Start
+    renderMiniCart();
+  </script>
+</body>
+</html>
+
