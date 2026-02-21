@@ -261,6 +261,35 @@ border: 2px solid #0b0f14;}
   .cartDock{
   user-select:none;
 }
+/* Pegadores de arrasto */
+#dragHandle{
+  cursor: grab;
+  touch-action: none;
+}
+#dragHandle:active{ cursor: grabbing; }
+
+/* Pegador de baixo */
+.dragBottom{
+  height: 22px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor: grab;
+  touch-action: none;
+}
+.dragBottom:active{ cursor: grabbing; }
+
+/* Barrinha visual */
+.dragBottom::before{
+  content:"";
+  width: 54px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.12);
+}
 }
   </style>
 </head>
